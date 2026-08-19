@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// 登録ユーザー
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+
+  sessions      Session[]
+  loginAttempts LoginAttempt[]
+}
+
+// セッションベース認証のセッション情報(DB管理)
+// 追加機能「現在アクティブなセッションの一覧表示と個別ログアウト」の基盤データ
+model Session {
+  id             String    @id @default(uuid())
+  // Cookieに渡す生のセッショントークンはDBに保存せず、そのSHA-256ハッシュのみを保存する
+  // (DB漏洩時に生トークンを窃取されてもセッションを乗っ取れないようにするため)
+  tokenHash      String    @unique
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent      String?
+  ipAddress      String?
+  rememberMe     Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  lastActiveAt   DateTime  @default(now())
+  expiresAt      DateTime
+  revokedAt      DateTime?
+
+  @@index([userId])
+}
+
+// ログイン試行履歴
+// 追加機能「ログイン試行のレート制限」と「ログイン履歴の表示」の両方で使用する
+model LoginAttempt {
+  id        String   @id @default(uuid())
+  email     String
+  success   Boolean
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([email, createdAt])
+  @@index([ipAddress, createdAt])
+}

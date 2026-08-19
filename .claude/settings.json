@@ -1,0 +1,57 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "WebSearch",
+      "WebFetch(domain:nextjs.org)",
+      "WebFetch(domain:*.nextjs.org)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:*.github.com)",
+      "WebFetch(domain:npmjs.com)",
+      "WebFetch(domain:*.npmjs.com)",
+      "WebFetch(domain:developer.mozilla.org)",
+      "Bash(npm install*)",
+      "Bash(npm ci*)",
+      "Bash(npm run*)",
+      "Bash(npm audit*)",
+      "Bash(npx create-next-app*)",
+      "Bash(npx next*)",
+      "Bash(npx prisma*)",
+      "Bash(npx tsc*)",
+      "Bash(npx eslint*)",
+      "Bash(npx vitest*)",
+      "Bash(npx playwright*)",
+      "Bash(git status)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git branch*)",
+      "Bash(git checkout*)",
+      "Bash(git pull)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(git reset*)",
+      "Bash(git rebase*)",
+      "Bash(git merge*)",
+      "Bash(rm*)",
+      "Bash(npm uninstall*)",
+      "Bash(npx prisma migrate reset*)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.local)",
+      "Read(.env.*.local)",
+      "Read(//.ssh/**)",
+      "Read(//.aws/**)",
+      "Read(//.gnupg/**)",
+      "Bash(git push --force*)",
+      "Bash(curl * | sh)",
+      "Bash(curl * | bash)"
+    ]
+  }
+}
